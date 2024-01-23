@@ -1,0 +1,18 @@
+{
+  "name": "bitbirddev/deploy",
+  "require": {
+    "deployer/deployer": "^7.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "bitbirddev\\Deploy\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "bitbird development",
+      "email": "bs@bitbird.de"
+    }
+  ],
+  "minimum-stability": "stable"
+}
