@@ -12,9 +12,6 @@ set('bin/php', 'php8.2');
 set('php_fpm_version', '8.2');
 set('keep_releases', 2);
 set('writable_dirs', ['var', 'var/cache', 'var/cache/dev', 'var/cache/prod', 'var/log', 'var/sessions', 'public/var']);
-set('rsync_src', function () {
-    return __DIR__;
-});
 set('ssh_multiplexing', true);
 add('rsync', [ 'exclude' => [ '.git', 'node_modules', '.github', 'deploy.php', ], ]);
 
@@ -50,7 +47,6 @@ task('deploy', [
     'deploy:writable',
     'symfony:cache:clear',
     'composer:post-update-cmd',
-    'pimcore:deploy',
     'pimcore:rebuild-classes',
     'pimcore:cache:clear',
     'symfony:stop-workers',
