@@ -1,0 +1,53 @@
+name: PUSH Workflow
+on:
+  push:
+    branches:
+      - main
+concurrency: production_environment
+jobs:
+  deploy_to_production:
+    environment: prod
+    name: Fast deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          extensions: mbstring, bcmath
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 'latest'
+      - name: Write .env file
+        uses: DamianReeves/write-file-action@master
+        with:
+          path: .env
+          contents: |
+            ${{ vars.DOTENV }}
+          write-mode: overwrite
+      - name: Get Composer-Cache Directory Path
+        id: composer-cache
+        run: |
+          # shellcheck disable=SC2086
+          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      - name: Check if Composer-Cache hits (unchanged dependencies)
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+      - name: Composer install
+        run: composer install --quiet --no-ansi --no-interaction --no-scripts --no-progress --optimize-autoloader
+      - name: bun install
+        run: bun install --non-interactive --silent
+      - name: bun run build
+        run: bun run build
+      - name: Deploy to Server
+        uses: deployphp/action@v1
+        with:
+          dep: deploy
+          private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known-hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
