@@ -20,7 +20,7 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: "latest"
+          bun-version: 'latest'
       - name: Write .env file
         uses: DamianReeves/write-file-action@master
         with:
@@ -28,6 +28,12 @@ jobs:
           contents: |
             ${{ vars.DOTENV }}
           write-mode: overwrite
+      - name: copy .gitignore to .ignore
+        uses: canastro/copy-file-action@master
+        with:
+          source: '.gitignore'
+          target: '.ignore'
+
       - name: Get Composer-Cache Directory Path
         id: composer-cache
         run: |

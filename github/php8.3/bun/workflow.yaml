@@ -28,6 +28,11 @@ jobs:
           contents: |
             ${{ vars.DOTENV }}
           write-mode: overwrite
+      - name: copy .gitignore to .ignore
+        uses: canastro/copy-file-action@master
+        with:
+          source: '.gitignore'
+          target: '.ignore'
       - name: Get Composer-Cache Directory Path
         id: composer-cache
         run: |
