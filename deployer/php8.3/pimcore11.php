@@ -7,6 +7,7 @@ require 'contrib/rsync.php';
 require 'recipe/pimcore.php';
 require 'contrib/php-fpm.php';
 
+
 ########## SET CONFIG OPTION ###########################################
 set('bin/php', 'php8.3');
 set('php_fpm_version', '8.3');
@@ -14,6 +15,7 @@ set('keep_releases', 2);
 set('writable_dirs', ['var', 'var/cache', 'var/cache/dev', 'var/cache/prod', 'var/log', 'var/sessions', 'public/var']);
 set('ssh_multiplexing', true);
 add('rsync', [ 'exclude' => [ '.git', 'node_modules', '.github', 'deploy.php', ], ]);
+add('shared_dirs', ['var/log']);
 
 
 ########## TASKS #######################################################

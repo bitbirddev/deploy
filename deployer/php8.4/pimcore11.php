@@ -14,6 +14,7 @@ set('keep_releases', 2);
 set('writable_dirs', ['var', 'var/cache', 'var/cache/dev', 'var/cache/prod', 'var/log', 'var/sessions', 'public/var']);
 set('ssh_multiplexing', true);
 add('rsync', [ 'exclude' => [ '.git', 'node_modules', '.github', 'deploy.php', ], ]);
+add('shared_dirs', ['var/log']);
 
 
 ########## TASKS #######################################################
